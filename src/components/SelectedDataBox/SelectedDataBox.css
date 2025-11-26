@@ -1,0 +1,53 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #000000;
+}
+
+th, td {
+  border: 1px solid #000000;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.selected-data-box {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 350px;
+  max-height: 80vh;
+  overflow-y: auto;
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.2);
+  z-index: 9999;
+}
+
+.estaciones-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.estaciones-table th,
+.estaciones-table td {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.dropdown-row {
+  background: #f9f9f9;
+}
+
+.dropdown-content {
+  padding: 10px;
+}
