@@ -1,6 +1,6 @@
 # MapLeaflet
 
-Una aplicación de mapas interactiva construida con React y Leaflet para visualizar datos geoespaciales.
+Una aplicación de mapas interactiva construida con React y Leaflet para visualizar.
 
 
 ## Requisitos Previos
