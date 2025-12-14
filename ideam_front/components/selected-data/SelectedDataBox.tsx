@@ -14,7 +14,7 @@ export function SelectedDataBox({ selectedStations }: SelectedDataBoxProps) {
   }
 
   return (
-    <div className="selected-data-box">
+    <div className="selected-data-box" style={{ width: "500px" }}>
       <h3>Datos Seleccionados</h3>
 
       <table className="estaciones-table">

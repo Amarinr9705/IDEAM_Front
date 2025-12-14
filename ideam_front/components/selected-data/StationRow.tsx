@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Station, StationDataPoint } from "@/types/station";
+import { StationChart } from "../chart/StationChart";
 
 interface StationRowProps {
   station: Station;
@@ -29,25 +30,21 @@ export function StationRow({ station, data, isLoading, error }: StationRowProps)
           <td colSpan={2}>
             <div className="dropdown-content">
               <p>Código estación: {station.codigoestacion}</p>
-              
+
               {isLoading && <p>Cargando datos...</p>}
-              
+
               {error && (
                 <p style={{ color: "red" }}>
                   Error: {error.message}
                 </p>
               )}
-              
+
               {data && !isLoading && (
                 <>
                   <p>Total de datos: {data.length}</p>
-                  <pre style={{ 
-                    maxHeight: "400px", 
-                    overflow: "auto",
-                    fontSize: "12px"
-                  }}>
-                    {JSON.stringify(data, null, 2)}
-                  </pre>
+                  <div style={{ width: "100%", height: "450px" }}>
+                    <StationChart data={data} />
+                  </div>
                 </>
               )}
             </div>
