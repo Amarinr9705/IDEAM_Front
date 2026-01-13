@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { useMemo } from "react";
 import { StationDataPoint } from "@/types/station";
 
-// Dynamically import Plot with ssr: false to avoid "window is not defined" error in Next.js
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
 interface StationChartProps {
@@ -15,7 +14,6 @@ export function StationChart({ data }: StationChartProps) {
     const filteredData = useMemo(() => {
         if (!data || data.length === 0) return [];
 
-        // Sort data by date ascending
         const sorted = [...data].sort(
             (a, b) =>
                 new Date(a.fechaobservacion).getTime() -
@@ -24,7 +22,6 @@ export function StationChart({ data }: StationChartProps) {
 
         if (sorted.length === 0) return [];
 
-        // Filter data to only include points within that last year
         return sorted;
     }, [data]);
 
@@ -39,13 +36,14 @@ export function StationChart({ data }: StationChartProps) {
                             type: "scattergl",
                             mode: "markers",
                             marker: { color: "#0077ff" },
-                            line: { shape: "spline" }, // Smooth lines
+                            line: { shape: "spline" },
                         },
                     ]}
                     layout={{
                         autosize: true,
                         title: { text: "Historico de Observaciones" },
                         xaxis: {
+                            type: "date",
                             title: { text: "Fecha de Observación" },
                             showgrid: true,
                         },

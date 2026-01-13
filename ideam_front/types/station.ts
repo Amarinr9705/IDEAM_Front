@@ -12,7 +12,7 @@ export interface Station {
 export interface StationDataPoint {
   fechaobservacion: string;
   valorobservado: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface StationAPIResponse {

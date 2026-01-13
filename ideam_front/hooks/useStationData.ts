@@ -1,67 +1,61 @@
 import { useEffect, useState } from "react";
 import { fetchStationData } from "@/lib/api";
 import { StationDataPoint, Station } from "@/types/station";
+import { DateRange } from "react-day-picker";
 
-export function useStationData(selectedStations: Station[]) {
-  const [stationData, setStationData] = useState<Record<string, StationDataPoint[]>>({});
-  const [loading, setLoading] = useState<Record<string, boolean>>({});
-  const [errors, setErrors] = useState<Record<string, Error>>({});
+export function useStationData(station: Station, dateRange?: DateRange) {
+  const [data, setData] = useState<StationDataPoint[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | undefined>(undefined);
 
   useEffect(() => {
     let mounted = true;
 
-    async function loadStationData(station: Station) {
+    async function loadStationData() {
       const codigo = station.codigoestacion;
 
-      // Skip if already loaded or loading
-      if (stationData[codigo] || loading[codigo]) {
-        return;
-      }
-
-      // Set loading state
-      setLoading(prev => ({ ...prev, [codigo]: true }));
+      setLoading(true);
+      setError(undefined);
 
       try {
-        const data = await fetchStationData(
+        // Use the station's min and max observation dates directly
+        // If dateRange is provided, we would need to format it, but for now
+        // we use the station's natural date range
+        const fromDate = dateRange?.from
+          ? station.min_fechaobservacion
+          : station.min_fechaobservacion;
+        const toDate = dateRange?.to
+          ? station.max_fechaobservacion
+          : station.max_fechaobservacion;
+
+        const responseData = await fetchStationData(
           codigo,
-          station.min_fechaobservacion,
-          station.max_fechaobservacion
+          fromDate,
+          toDate
         );
 
         if (mounted) {
-          setStationData(prev => ({
-            ...prev,
-            [codigo]: data
-          }));
-          setErrors(prev => {
-            const newErrors = { ...prev };
-            delete newErrors[codigo];
-            return newErrors;
-          });
+          setData(responseData);
         }
       } catch (err) {
         if (mounted) {
-          setErrors(prev => ({
-            ...prev,
-            [codigo]: err instanceof Error ? err : new Error("Failed to load station data")
-          }));
+          setError(err instanceof Error ? err : new Error("Failed to load station data"));
         }
       } finally {
         if (mounted) {
-          setLoading(prev => ({ ...prev, [codigo]: false }));
+          setLoading(false);
         }
       }
     }
 
-    // Load data for all selected stations
-    selectedStations.forEach(station => {
-      loadStationData(station);
-    });
+    if (station) {
+      loadStationData();
+    }
 
     return () => {
       mounted = false;
     };
-  }, [selectedStations]);
+  }, [station, dateRange]);
 
-  return { stationData, loading, errors };
+  return { data, loading, error };
 }

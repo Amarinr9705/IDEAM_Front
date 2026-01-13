@@ -37,9 +37,9 @@ function MapViewComponent({ onSelectStation }: MapViewProps) {
       style={{ height: "100vh", width: "100%" }}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-      {stations.map((station) => (
+      {Array.from(new Map(stations.map(s => [s.codigoestacion, s])).values()).map((station) => (
         <HoverMarker
-          key={station.ide}
+          key={station.codigoestacion}
           station={station}
           onSelect={onSelectStation}
         />

@@ -1,5 +1,4 @@
 import { Station } from "@/types/station";
-import { useStationData } from "@/hooks/useStationData";
 import { StationRow } from "./StationRow";
 
 interface SelectedDataBoxProps {
@@ -7,21 +6,20 @@ interface SelectedDataBoxProps {
 }
 
 export function SelectedDataBox({ selectedStations }: SelectedDataBoxProps) {
-  const { stationData, loading, errors } = useStationData(selectedStations);
 
   if (selectedStations.length === 0) {
     return null;
   }
 
   return (
-    <div className="selected-data-box" style={{ width: "500px" }}>
-      <h3>Datos Seleccionados</h3>
+    <div className="selected-data-box p-4 bg-white shadow-lg rounded-lg fixed bottom-4 right-4 z-[1000] max-h-[600px] overflow-auto" style={{ width: "500px" }}>
+      <h3 className="font-bold text-lg mb-2">Datos Seleccionados</h3>
 
-      <table className="estaciones-table">
+      <table className="estaciones-table w-full">
         <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Ver gráfica</th>
+          <tr className="text-left border-b">
+            <th className="p-2">Nombre</th>
+            <th className="p-2">Ver gráfica</th>
           </tr>
         </thead>
 
@@ -30,9 +28,6 @@ export function SelectedDataBox({ selectedStations }: SelectedDataBoxProps) {
             <StationRow
               key={station.codigoestacion}
               station={station}
-              data={stationData[station.codigoestacion]}
-              isLoading={loading[station.codigoestacion] || false}
-              error={errors[station.codigoestacion]}
             />
           ))}
         </tbody>
